@@ -52,6 +52,87 @@ class ProsesPasien implements KontrakPresenter
 			echo "wiw error part 2" . $e->getMessage();
 		}
 	}
+	
+	// get spesific pasien
+	public function getDetailPasien($id) {
+		try {
+			$this->tabelpasien->open();	// open db
+			$this->tabelpasien->getDetailPasien($id); // get the record
+			
+			$data = $this->tabelpasien->getResult();
+			//ambil hasil query
+			$pasien = new Pasien(); //instansiasi objek pasien untuk setiap data pasien
+			$pasien->setId($data['id']); //mengisi id
+			$pasien->setNik($data['nik']); //mengisi nik
+			$pasien->setNama($data['nama']); //mengisi nama
+			$pasien->setTempat($data['tempat']); //mengisi tempat
+			$pasien->setTl($data['tl']); //mengisi tl
+			$pasien->setGender($data['gender']); //mengisi gender
+			$pasien->setEmail($data['email']); // mengisi email
+			$pasien->setTelp($data['telp']); // mengisi telepon
+			$this->data[] = $data; //tambahkan data pasien ke dalam list
+
+			$this->tabelpasien->close();
+		} catch (Exception $e) {
+			//throw $e;
+			echo "wiw error part 3" . $e->getMessage();
+		}
+	}
+
+	// insert pasien
+	public function createPasien($data) {
+		try {
+			$pasien = new Pasien();	// initialization pasien object
+			$pasien->setNik($data['nik']);	// fill nik field
+			$pasien->setNama($data['nama']);	// fill nama field
+			$pasien->setTempat($data['tempat']); // fill tempat field
+			$pasien->setTl($data['tl']);	// fill tl field
+			$pasien->setGender($data['gender']); // fill gender field
+			$pasien->setEmail($data['email']); // fill email field
+			$pasien->setTelp($data['telp']); // fill telp field
+
+			$this->tabelpasien->open(); // open db
+			$this->tabelpasien->createPasien($pasien); // create pasien
+			$this->tabelpasien->close(); // close db
+		} catch (Exception $e) {
+			//throw $e;
+			echo "wiw error part 4" . $e->getMessage();
+		}
+	}
+
+	public function updatePasien($data) {
+		try {
+			$pasien = new Pasien();	// initialization pasien object
+			$pasien->setId($data['id']); // fill id field
+			$pasien->setNik($data['nik']);	// fill nik field
+			$pasien->setNama($data['nama']);	// fill nama field
+			$pasien->setTempat($data['tempat']); // fill tempat field
+			$pasien->setTl($data['tl']);	// fill tl field
+			$pasien->setGender($data['gender']); // fill gender field
+			$pasien->setEmail($data['email']); // fill email field
+			$pasien->setTelp($data['telp']); // fill telp field
+
+			$this->tabelpasien->open();	// open db
+			$this->tabelpasien->updatePasien($pasien); // update record
+			$this->tabelpasien->close(); // close db
+		} catch (Exception $e) {
+			//throw $e;
+			echo "wiw error part 5" . $e->getMessage();
+		}
+	}
+
+	public function deletePasien($id) {
+		try {
+			$pasien = new Pasien(); // initialization object
+			$pasien->setId($id); // fill id field
+			$this->tabelpasien->open(); // open db
+			$this->tabelpasien->deletePasien($pasien->getId()); // delete record
+			$this->tabelpasien->close(); // close db
+		} catch (Exception $e) {
+			//throw $e;
+			echo "wiw error part 5" . $e->getMessage();
+		}
+	}
 	function getId($i)
 	{
 		//mengembalikan id Pasien dengan indeks ke i
